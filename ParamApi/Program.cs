@@ -1,5 +1,6 @@
 using Application;
 using Microsoft.EntityFrameworkCore;
+using ParamApi.Middlewares;
 using Persistance;
 using Persistance.EFCoreDbContext;
 
@@ -26,6 +27,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCustomExceptionMiddleware();
 
 app.MapControllers();
 

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Mapper;
 using Application.Services;
@@ -26,6 +27,9 @@ namespace Application
             // Add services to the container.
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+            services.AddSingleton<ILoggerService, LoggerService>();
+            services.AddSingleton(mapper);
+
             services.AddScoped<IAllergyService, AllergyService>();
             services.AddScoped<ICertificationService, CertificationService>();
             services.AddScoped<IDoctorService, DoctorService>();
@@ -36,7 +40,7 @@ namespace Application
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IPrescriptionService, PrescriptionService>();
             services.AddScoped<ISpecialtyService, SpecialtyService>();
-            services.AddSingleton(mapper);
+            
             
             return services;
         }

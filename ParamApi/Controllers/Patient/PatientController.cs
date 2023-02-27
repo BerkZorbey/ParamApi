@@ -9,7 +9,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-namespace ParamApi.Hafta_1.Controllers.Patient
+namespace ParamApi.Controllers.Patient
 {
     [Route("api/[controller]")]
     [ApiController]
