@@ -9,7 +9,6 @@ namespace Application.DTOs
 {
     public class PatientPhoneDto
     {
-        [Phone]
         public string Phone { get; set; }
     }
 }

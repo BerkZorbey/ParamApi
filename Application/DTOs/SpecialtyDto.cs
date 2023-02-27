@@ -9,7 +9,6 @@ namespace Application.DTOs
 {
     public class SpecialtyDto
     {
-        [Required]
         public string Name { get; set; }
     }
 }

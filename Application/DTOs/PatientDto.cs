@@ -11,7 +11,6 @@ namespace Application.DTOs
 {
     public class PatientDto : PersonDto
     {
-        [Required]
         public DateTime Accepted { get; set; }
         public string? Sickness { get; set; }
         public List<AllergyDto>? Allergies { get; set; }

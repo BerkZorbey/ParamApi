@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.FluentValidation;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Repositories.Base;
@@ -10,6 +11,8 @@ using Domain.Entities;
 using Domain.ValueObject;
 using Domain.ValueObject.Paging;
 using Domain.ValueObject.ResponseModels;
+using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +60,9 @@ namespace Application.Services
                 {
                     throw new Exception("Model is not valid.");
                 }
+                PatientValidator validator = new();
+                await validator.ValidateAndThrowAsync(dto);
+
                 var entity = _mapper.Map<Patient>(dto);
                 var alergies = await _allergyRepository.GetAll();
                 
@@ -82,13 +88,16 @@ namespace Application.Services
             }
             catch (Exception ex)
             {
-                return new ResponseModel(400,ex);
+                return new ResponseModel(400,ex.Message);
             }
         }
         public async override Task<ResponseModel> UpdateAsync(int id, PatientDto dto)
         {
             try
             {
+                PatientValidator validator = new();
+                await validator.ValidateAndThrowAsync(dto);
+
                 var tempEntity = await _patientRepository.GetById(id);
 
                 tempEntity.Model.FirstName = dto.FirstName != default ? dto.FirstName : tempEntity.Model.FirstName;
@@ -121,18 +130,21 @@ namespace Application.Services
             }
             catch (Exception ex)
             {
-                return new ResponseModel(404,ex);
+                return new ResponseModel(404,ex.Message);
             }
         }
         public async Task<ResponseModel> UpdatePhoneAsync(int id, PatientPhoneDto phoneDto)
         {
             try
             {
+                PatientPhoneValidator validator = new();
+                await validator.ValidateAndThrowAsync(phoneDto);
                 var patient = await _patientRepository.GetById(id);
                 if(patient is null)
                 {
                     throw new Exception("Data is not found");
                 }
+
                 patient.Model.Phone = phoneDto.Phone != default ? phoneDto.Phone : patient.Model.Phone;
                 var response = await _patientRepository.UpdateAsync(patient.Model);
                 await _unitOfWork.CompleteAsync();
@@ -140,7 +152,7 @@ namespace Application.Services
             }
             catch(Exception ex)
             {
-                return new ResponseModel(400,ex);
+                return new ResponseModel(400,ex.Message);
             }
         }
     }

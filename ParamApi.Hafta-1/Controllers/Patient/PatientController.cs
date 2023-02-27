@@ -1,11 +1,14 @@
 ﻿using Application.DTOs;
+using Application.DTOs.FluentValidation;
 using Application.Interfaces.Services;
+using Domain.Aggregates;
 using Domain.ValueObject.Paging;
 using Domain.ValueObject.ResponseModels;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 namespace ParamApi.Hafta_1.Controllers.Patient
 {
     [Route("api/[controller]")]
@@ -36,24 +39,48 @@ namespace ParamApi.Hafta_1.Controllers.Patient
         [HttpPost]
         public async Task<ResponseModel> InsertPatient([FromBody] PatientDto patient)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var response = await _patientService.InsertAsync(patient);
-                return response;
+                if (ModelState.IsValid)
+                { 
+                    var response = await _patientService.InsertAsync(patient);
+                    return response;             
+                }
+                return new ResponseModel(400, "Model is not valid");
             }
-            return new ResponseModel(400, "Model is not valid");
+            catch (Exception ex)
+            {
+                return new ResponseModel(400, ex.Message);
+            }
+
         }
         [HttpPut("{id}")]
         public async Task<ResponseModel> UpdatePatient(int id, [FromBody] PatientDto patient)
         {
-            var response = await _patientService.UpdateAsync(id, patient);
-            return response;
+            try
+            {
+                var response = await _patientService.UpdateAsync(id, patient);
+                return response;
+            }
+            catch(Exception ex)
+            {
+                return new ResponseModel(400, ex.Message);
+            }
+            
         }
         [HttpPatch]
         public async Task<ResponseModel> UpdatePatientPhone(int id, [FromBody] PatientPhoneDto phoneDto)
         {
-            var response = await _patientService.UpdatePhoneAsync(id, phoneDto);
-            return response;
+            try
+            {
+                var response = await _patientService.UpdatePhoneAsync(id, phoneDto);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(400, ex.Message);
+            }
+            
         }
         [HttpDelete("{id}")]
         public async Task<ResponseModel> HardDeletePatient(int id)

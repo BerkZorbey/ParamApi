@@ -9,7 +9,6 @@ namespace Application.DTOs
 {
     public class DrugDto
     {
-        [Required]
         public string Name { get; set; }
         public string? Description { get; set; }
         public DateTime ExpirationDate { get; set; }

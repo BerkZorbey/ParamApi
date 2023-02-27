@@ -10,9 +10,7 @@ namespace Application.DTOs
 {
     public class PrescriptionDto
     {
-        [Required]
         public int PatientId { get; set; }
-        [Required]
         public int DoctorId { get; set; }
         public string? Diagnosis { get; set; }
         public List<DrugDto>? Drugs { get; set; }
